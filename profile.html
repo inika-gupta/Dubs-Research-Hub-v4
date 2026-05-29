@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Researcher Profile · Dubs' Research Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f0f0f5;
+  color: #1d1d1f;
+  min-height: 100vh;
+  transition: background 0.25s, color 0.25s;
+}
+body.dark { background: #0b0b0e; color: rgba(230,225,240,0.88); }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 56px;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+body.dark nav { background: rgba(10,10,13,0.9); border-bottom-color: rgba(255,255,255,0.07); }
+.nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+#dubs-logo-dark  { display: none; }
+#dubs-logo-light { display: block; }
+body.dark  #dubs-logo-dark  { display: block; }
+body.dark  #dubs-logo-light { display: none; }
+body:not(.dark) #dubs-logo-dark  { display: none; }
+body:not(.dark) #dubs-logo-light { display: block; }
+.nav-brand span {
+  font-size: 15px; font-weight: 700;
+  background: linear-gradient(135deg,#44296a,#6d28d9);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+body.dark .nav-brand span {
+  background: linear-gradient(135deg,#a8c4ff,#c4b5fd);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 13px; color: rgba(0,0,0,0.4);
+  text-decoration: none; padding: 5px 12px; border-radius: 8px;
+  border: none; background: none; cursor: pointer; font-family: inherit;
+  transition: color 0.15s, background 0.15s;
+}
+.nav-link:hover { color: #1d1d1f; background: rgba(0,0,0,0.05); }
+body.dark .nav-link { color: rgba(255,255,255,0.4); }
+body.dark .nav-link:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.06); }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+
+/* ── THEME TOGGLE PILL ── */
+#theme-toggle {
+  display: flex; align-items: center;
+  border-radius: 20px; padding: 3px;
+  background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.09);
+  cursor: pointer; gap: 2px;
+}
+body.dark #theme-toggle { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.1); }
+.tt-opt {
+  display: flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 16px; font-size: 11px; font-weight: 600;
+  color: rgba(0,0,0,0.3); transition: all 0.15s; white-space: nowrap;
+  user-select: none;
+}
+body.dark .tt-opt { color: rgba(255,255,255,0.28); }
+.tt-opt.active { background: #fff; color: #44296a; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+body.dark .tt-opt.active { background: rgba(255,255,255,0.13); color: rgba(200,215,255,0.88); box-shadow: none; }
+
+/* ── PAGE WRAPPER ── */
+.page { max-width: 1160px; margin: 0 auto; padding: 0 28px 80px; }
+.breadcrumb {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin: 20px 0 20px; font-size: 12.5px; color: #6e6e73;
+  cursor: pointer; transition: color .14s; user-select: none;
+}
+.breadcrumb:hover { color: #44296a; }
+body.dark .breadcrumb { color: rgba(255,255,255,0.35); }
+body.dark .breadcrumb:hover { color: rgba(196,181,253,0.7); }
+
+/* ── HEADER CARD ── */
+.profile-header {
+  background: #fff; border-radius: 20px;
+  border: 1px solid rgba(0,0,0,0.07);
+  padding: 28px 32px 24px; margin-bottom: 16px;
+}
+body.dark .profile-header { background: rgba(18,18,24,0.98); border-color: rgba(255,255,255,0.08); }
+
+.ph-top { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 22px; }
+.ph-avatar {
+  width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(109,40,217,0.15), rgba(68,41,106,0.15));
+  border: 2px solid rgba(109,40,217,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; font-weight: 800; color: #5b21b6; letter-spacing: -1px;
+}
+body.dark .ph-avatar { background: rgba(167,139,250,0.1); border-color: rgba(167,139,250,0.25); color: #c4b5fd; }
+
+.ph-info { flex: 1; min-width: 0; }
+.ph-name { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 4px; color: #111; }
+body.dark .ph-name { color: rgba(240,235,255,0.96); }
+.ph-role { font-size: 13.5px; color: #6e6e73; margin-bottom: 12px; }
+body.dark .ph-role { color: rgba(255,255,255,0.4); }
+.ph-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.ph-tag {
+  font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px;
+  border: none; background: rgba(109,40,217,0.18); color: #44296a;
+}
+body.dark .ph-tag { background: rgba(196,181,253,0.16); color: rgba(196,181,253,0.95); }
+
+.ph-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; width: 248px; max-width: 40%; }
+@media (max-width: 760px) { .ph-actions { width: auto; max-width: none; } }
+.btn-save {
+  width: 34px; height: 34px; border-radius: 9px;
+  border: 1px solid rgba(0,0,0,0.1); background: none;
+  color: #aeaeb2; cursor: pointer; display: flex;
+  align-items: center; justify-content: center; transition: all .14s;
+}
+.btn-save:hover { border-color: #5b21b6; color: #5b21b6; }
+body.dark .btn-save { border-color: rgba(255,255,255,0.1); color: rgba(255,255,255,0.28); }
+body.dark .btn-save:hover { border-color: #c4b5fd; color: #c4b5fd; }
+.btn-save.saved { color: #5b21b6; border-color: rgba(91,33,182,0.3); }
+body.dark .btn-save.saved { color: #c4b5fd; border-color: rgba(196,181,253,0.3); }
+
+/* ── STATS BAR ── */
+.ph-stats {
+  display: flex; align-items: center;
+  border-top: 1px solid rgba(0,0,0,0.06); padding-top: 18px;
+}
+body.dark .ph-stats { border-top-color: rgba(255,255,255,0.07); }
+.stat-item {
+  display: flex; align-items: baseline; gap: 5px;
+  padding-right: 24px; margin-right: 24px;
+  border-right: 1px solid rgba(0,0,0,0.07);
+}
+.stat-item:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+body.dark .stat-item { border-right-color: rgba(255,255,255,0.07); }
+.stat-num { font-size: 19px; font-weight: 800; color: #111; letter-spacing: -0.5px; }
+body.dark .stat-num { color: rgba(240,235,255,0.96); }
+.stat-label { font-size: 11.5px; color: #aeaeb2; font-weight: 500; }
+body.dark .stat-label { color: rgba(255,255,255,0.32); }
+
+/* ── BODY: TWO COLUMNS ── */
+.profile-body {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 900px) { .profile-body { grid-template-columns: 1fr; } }
+
+/* ── LEFT COLUMN ── */
+.col-left {
+  background: #fff; border-radius: 20px;
+  border: 1px solid rgba(0,0,0,0.07); overflow: hidden;
+}
+body.dark .col-left { background: rgba(18,18,24,0.98); border-color: rgba(255,255,255,0.08); }
+
+/* Tab bar */
+.tab-bar {
+  display: flex; align-items: center;
+  border-bottom: 1px solid rgba(0,0,0,0.07); padding: 0 28px;
+}
+body.dark .tab-bar { border-bottom-color: rgba(255,255,255,0.07); }
+.tab-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 13.5px; font-weight: 600; color: #aeaeb2;
+  background: none; border: none; cursor: pointer; font-family: inherit;
+  padding: 15px 0; margin-right: 26px; border-bottom: 2px solid transparent;
+  transition: color .14s;
+}
+.tab-btn.active { color: #1d1d1f; border-bottom-color: #5b21b6; }
+body.dark .tab-btn { color: rgba(255,255,255,0.32); }
+body.dark .tab-btn.active { color: rgba(240,235,255,0.96); border-bottom-color: #c4b5fd; }
+.tab-badge {
+  font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 20px;
+  background: rgba(0,0,0,0.06); color: #6e6e73;
+}
+body.dark .tab-badge { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+.tab-btn.active .tab-badge { background: rgba(91,33,182,0.12); color: #5b21b6; }
+body.dark .tab-btn.active .tab-badge { background: rgba(196,181,253,0.16); color: #c4b5fd; }
+
+/* Tab panels */
+.tab-panel { display: none; padding: 26px 28px; }
+.tab-panel.active { display: block; }
+
+/* Bio */
+.bio-text { font-size: 14px; line-height: 1.75; color: #3d3d3f; margin-bottom: 20px; }
+body.dark .bio-text { color: rgba(220,215,240,0.68); }
+
+/* Working on card */
+.working-card {
+  background: rgba(0,0,0,0.025); border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.07); padding: 17px 19px; margin-bottom: 18px;
+}
+body.dark .working-card { background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.08); }
+.working-label {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 9px; font-weight: 800; letter-spacing: 0.11em;
+  text-transform: uppercase; color: #34c759; margin-bottom: 9px;
+}
+.wl-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: #34c759;
+  animation: pulse 2s ease-in-out infinite; flex-shrink: 0;
+}
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.35} }
+.working-title { font-size: 14px; font-weight: 700; line-height: 1.4; margin-bottom: 7px; color: #111; }
+body.dark .working-title { color: rgba(240,235,255,0.95); }
+.working-desc { font-size: 13px; line-height: 1.65; color: #6e6e73; margin-bottom: 9px; }
+body.dark .working-desc { color: rgba(255,255,255,0.4); }
+.working-details { font-size: 11.5px; color: #aeaeb2; font-weight: 500; }
+body.dark .working-details { color: rgba(255,255,255,0.28); }
+
+/* Looking for */
+.looking-row {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 24px;
+}
+.looking-label { font-size: 13px; color: #6e6e73; font-weight: 500; flex-shrink: 0; }
+body.dark .looking-label { color: rgba(255,255,255,0.36); }
+.lf-tag {
+  font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px;
+  border: none; background: rgba(109,40,217,0.18); color: #44296a;
+}
+body.dark .lf-tag { background: rgba(196,181,253,0.16); color: rgba(196,181,253,0.95); }
+
+/* Selected research */
+.sr-header {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;
+}
+.sr-title { font-size: 15px; font-weight: 700; color: #111; }
+body.dark .sr-title { color: rgba(240,235,255,0.95); }
+.sr-counter { font-size: 12px; color: #aeaeb2; font-weight: 500; }
+body.dark .sr-counter { color: rgba(255,255,255,0.3); }
+
+.paper-item {
+  display: block; padding: 14px 12px; margin: 0 -12px;
+  border-bottom: 1px solid rgba(0,0,0,0.06); border-radius: 10px;
+  text-decoration: none; color: inherit; cursor: pointer; transition: background .14s;
+}
+.paper-item:hover { background: rgba(91,33,182,0.04); }
+.paper-item:hover .paper-link-hint { opacity: 1; }
+.paper-item:last-child { border-bottom: none; }
+body.dark .paper-item { border-bottom-color: rgba(255,255,255,0.06); }
+body.dark .paper-item:hover { background: rgba(196,181,253,0.06); }
+.paper-link-hint { color: #5b21b6; font-weight: 700; opacity: 0.7; transition: opacity .14s; }
+body.dark .paper-link-hint { color: #c4b5fd; }
+.paper-title { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 5px; line-height: 1.4; }
+body.dark .paper-title { color: rgba(230,225,240,0.92); }
+.paper-desc { font-size: 13px; line-height: 1.6; color: #6e6e73; margin-bottom: 6px; }
+body.dark .paper-desc { color: rgba(255,255,255,0.4); }
+.paper-venue { font-size: 11.5px; font-weight: 600; color: #aeaeb2; }
+body.dark .paper-venue { color: rgba(255,255,255,0.28); }
+
+/* ── CONTACT ROW (inside header card) ── */
+.ph-contact {
+  margin-top: 16px; padding-top: 14px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+body.dark .ph-contact { border-top-color: rgba(255,255,255,0.07); }
+.ph-contact-links {
+  display: flex; flex-direction: column; align-items: stretch; gap: 7px;
+  width: 100%; margin-top: 2px;
+}
+@media (max-width: 760px) { .ph-contact-links { flex-direction: row; flex-wrap: wrap; } }
+.contact-link {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; font-weight: 500; color: #3d3d3f;
+  text-decoration: none; padding: 9px 12px; border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.08); background: rgba(0,0,0,0.015);
+  transition: all .14s; cursor: pointer; font-family: inherit;
+}
+.contact-link:hover { border-color: rgba(91,33,182,0.28); background: rgba(91,33,182,0.04); color: #5b21b6; }
+body.dark .contact-link { border-color: rgba(255,255,255,0.08); background: rgba(255,255,255,0.025); color: rgba(220,215,240,0.7); }
+body.dark .contact-link:hover { border-color: rgba(196,181,253,0.25); color: #c4b5fd; background: rgba(196,181,253,0.05); }
+.cl-icon {
+  width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.cl-email   { background: rgba(109,40,217,0.09); color: #5b21b6; }
+.cl-linkedin{ background: rgba(10,102,194,0.09); color: #0a66c2; }
+.cl-uw      { background: rgba(75,0,130,0.07);  color: #4B0082; }
+.cl-scholar { background: rgba(0,0,0,0.05);     color: #3d3d3f; }
+.cl-web     { background: rgba(68,41,106,0.07); color: #44296a; }
+body.dark .cl-email    { background: rgba(196,181,253,0.09); color: #c4b5fd; }
+body.dark .cl-linkedin { background: rgba(100,170,255,0.08); color: rgba(130,195,255,0.85); }
+body.dark .cl-uw       { background: rgba(196,181,253,0.08); color: rgba(196,181,253,0.82); }
+body.dark .cl-scholar  { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.52); }
+body.dark .cl-web      { background: rgba(168,196,255,0.07); color: rgba(168,196,255,0.8); }
+.cl-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ── SAVE-TO-LIBRARY TOAST ── */
+#save-toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translate(-50%, 16px);
+  background: #1d1d1f; color: #fff; font-size: 13px; font-weight: 600;
+  padding: 11px 20px; border-radius: 11px; z-index: 9999;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.28);
+  opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+}
+#save-toast.show { opacity: 1; transform: translate(-50%, 0); }
+body.dark #save-toast { background: #2c2c34; }
+
+/* ── CONNECTIONS PANEL ── */
+.connections-list { display: flex; flex-direction: column; gap: 13px; }
+.conn-item { display: flex; align-items: center; gap: 13px; }
+.conn-avatar {
+  width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(68,41,106,0.09); border: 1px solid rgba(68,41,106,0.18);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #44296a;
+}
+body.dark .conn-avatar { background: rgba(168,196,255,0.08); border-color: rgba(168,196,255,0.18); color: #a8c4ff; }
+.conn-name { font-size: 13.5px; font-weight: 600; margin-bottom: 2px; }
+.conn-role { font-size: 12px; color: #6e6e73; }
+body.dark .conn-role { color: rgba(255,255,255,0.36); }
+.conn-type {
+  margin-left: auto; font-size: 11px; font-weight: 600; padding: 4px 12px;
+  border-radius: 20px; background: rgba(52,199,89,0.12); color: #1a8a3a;
+  flex-shrink: 0;
+}
+body.dark .conn-type { background: rgba(52,199,89,0.12); color: rgba(80,220,120,0.95); }
+/* Collab network SVG container */
+#collab-network-svg {
+  width: 100%; border-radius: 14px;
+  background: rgba(109,40,217,0.03);
+  display: block;
+}
+body.dark #collab-network-svg { background: rgba(109,40,217,0.06); }
+.collab-net-legend {
+  display: flex; flex-wrap: wrap; gap: 14px; padding: 10px 0 4px;
+  font-size: 11px; font-weight: 600; color: #6e6e73;
+  align-items: center;
+}
+body.dark .collab-net-legend { color: rgba(255,255,255,0.4); }
+.collab-net-legend-dot {
+  width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 5px;
+}
+#collab-net-tooltip {
+  position: fixed; pointer-events: none; z-index: 999;
+  background: rgba(255,255,255,0.96); border-radius: 10px;
+  padding: 8px 12px; font-size: 12px; font-weight: 600;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.14);
+  color: #1d1d1f; display: none; max-width: 200px; line-height: 1.5;
+}
+body.dark #collab-net-tooltip {
+  background: rgba(28,20,40,0.97); color: rgba(230,225,240,0.92);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+/* ── RIGHT COLUMN — sticky AI panel, fixed viewport height ── */
+.col-right {
+  position: sticky;
+  top: 72px;
+  height: calc(100vh - 88px);
+  /* Sticky sidebar needs a real height, but that height must NOT inflate the grid
+     row — otherwise the right column drives extra scroll below the left content
+     (connections / about). Negative margin cancels the block's flow contribution
+     while the panel still renders at full viewport height once stuck. */
+  margin-bottom: calc(88px - 100vh);
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+}
+@media (max-width: 900px) {
+  .col-right {
+    position: static;
+    height: auto;
+    max-height: 70vh;
+    margin-bottom: 0;
+  }
+}
+
+/* AI panel fills the column */
+.ai-panel {
+  flex: 1;
+  display: flex; flex-direction: column;
+  border-radius: 20px; overflow: hidden;
+  background: linear-gradient(160deg,
+    rgba(109,40,217,0.07) 0%,
+    rgba(68,41,106,0.05) 45%,
+    rgba(167,139,250,0.09) 100%);
+  border: 1px solid rgba(109,40,217,0.13);
+  backdrop-filter: blur(20px);
+}
+body.dark .ai-panel {
+  background: linear-gradient(160deg,
+    rgba(109,40,217,0.12) 0%,
+    rgba(68,41,106,0.08) 45%,
+    rgba(167,139,250,0.14) 100%);
+  border-color: rgba(167,139,250,0.18);
+}
+
+/* AI header */
+.ai-header-row {
+  display: flex; align-items: center; gap: 9px;
+  padding: 20px 22px 16px; flex-shrink: 0;
+  border-bottom: 1px solid rgba(109,40,217,0.08);
+}
+body.dark .ai-header-row { border-bottom-color: rgba(167,139,250,0.1); }
+.ai-icon {
+  width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0;
+  background: linear-gradient(135deg,#5b21b6,#44296a);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 15px; font-weight: 700; line-height: 1;
+}
+.ai-title { font-size: 13.5px; font-weight: 700; color: #111; }
+body.dark .ai-title { color: rgba(240,235,255,0.95); }
+
+/* Scrollable response area */
+.ai-response-wrap {
+  flex: 1; overflow-y: auto; padding: 16px 22px 8px;
+  scrollbar-width: thin; scrollbar-color: rgba(109,40,217,0.12) transparent;
+}
+.ai-empty {
+  height: 100%; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: rgba(109,40,217,0.32); text-align: center;
+  font-style: italic; line-height: 1.6; padding: 20px;
+}
+body.dark .ai-empty { color: rgba(196,181,253,0.25); }
+.ai-response-area {
+  font-size: 13px; line-height: 1.7; color: #3d3d3f; display: none;
+}
+body.dark .ai-response-area { color: rgba(220,215,240,0.75); }
+
+/* Controls */
+.ai-controls {
+  padding: 14px 22px 20px; flex-shrink: 0;
+  border-top: 1px solid rgba(109,40,217,0.1);
+}
+body.dark .ai-controls { border-top-color: rgba(167,139,250,0.13); }
+
+/* Overlap chip — slightly more prominent than regular chips */
+.ai-chip-overlap {
+  background: rgba(109,40,217,0.25) !important;
+  color: #44296a !important;
+}
+.ai-chip-overlap:hover {
+  background: rgba(109,40,217,0.32) !important;
+}
+body.dark .ai-chip-overlap {
+  background: rgba(167,139,250,0.24) !important;
+  color: #c4b5fd !important;
+}
+body.dark .ai-chip-overlap:hover {
+  background: rgba(167,139,250,0.32) !important;
+}
+
+/* Search row */
+.ai-search-row { display: flex; gap: 8px; margin-bottom: 11px; }
+.ai-search-input {
+  flex: 1; padding: 9px 13px; border-radius: 10px;
+  border: none; outline: none;
+  background: rgba(109,40,217,0.08);
+  box-shadow: 0 0 0 1.5px transparent;
+  font-family: inherit; font-size: 12.5px; color: #44296a;
+  transition: box-shadow .14s, background .14s;
+}
+.ai-search-input:focus {
+  background: rgba(109,40,217,0.11);
+  box-shadow: 0 0 0 1.5px rgba(109,40,217,0.35);
+}
+.ai-search-input::placeholder { color: rgba(109,40,217,0.4); }
+body.dark .ai-search-input {
+  background: rgba(167,139,250,0.1); color: rgba(220,215,240,0.88);
+}
+body.dark .ai-search-input:focus { box-shadow: 0 0 0 1.5px rgba(167,139,250,0.4); }
+body.dark .ai-search-input::placeholder { color: rgba(167,139,250,0.4); }
+.ai-go {
+  width: 36px; height: 36px; border-radius: 10px; border: none; cursor: pointer;
+  background: linear-gradient(135deg,#5b21b6,#44296a); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: opacity .14s;
+}
+.ai-go:hover { opacity: 0.86; }
+
+/* Suggestion chips */
+.ai-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ai-chip {
+  font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 20px;
+  border: none; outline: none;
+  background: rgba(109,40,217,0.18);
+  color: #44296a; cursor: pointer; font-family: inherit; transition: all .14s;
+}
+.ai-chip:hover { background: rgba(109,40,217,0.25); }
+body.dark .ai-chip {
+  background: rgba(167,139,250,0.16); color: #c4b5fd;
+}
+body.dark .ai-chip:hover { background: rgba(167,139,250,0.24); }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="landing.html" class="nav-brand">
+    <img id="dubs-logo-dark"  src="logo1.png" alt="Dubs' Research Hub" style="width:36px;height:36px;object-fit:contain;flex-shrink:0;">
+    <img id="dubs-logo-light" src="logo2.png" alt="Dubs' Research Hub" style="width:36px;height:36px;object-fit:contain;flex-shrink:0;">
+    <span>Dubs' Research Hub</span>
+  </a>
+  <div class="nav-links">
+    <a href="landing.html" class="nav-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      Explore
+    </a>
+    <a href="landing.html" class="nav-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Learn
+    </a>
+    <a href="landing.html" class="nav-link">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+      Library
+    </a>
+  </div>
+  <div class="nav-right">
+    <!-- Theme toggle pill -->
+    <div id="theme-toggle" role="button" title="Toggle dark/light mode" onclick="toggleTheme()">
+      <span class="tt-opt tt-dark">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        Dark
+      </span>
+      <span class="tt-opt tt-light">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        Light
+      </span>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE -->
+<div class="page">
+  <div class="breadcrumb" onclick="history.back()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Back to results
+  </div>
+
+  <!-- HEADER CARD -->
+  <div class="profile-header">
+    <div class="ph-top">
+      <div class="ph-avatar" id="ph-avatar">??</div>
+      <div class="ph-info">
+        <div class="ph-name" id="ph-name">Loading…</div>
+        <div class="ph-role" id="ph-role"></div>
+        <div class="ph-tags" id="ph-tags"></div>
+      </div>
+      <div class="ph-actions">
+        <button class="btn-save" id="btn-save" title="Save to library" onclick="toggleSaveLibrary(this)">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        </button>
+        <!-- Contact links — compact stack, top right of the header card -->
+        <div class="ph-contact-links" id="contact-links"></div>
+      </div>
+    </div>
+    <div class="ph-stats" id="ph-stats"></div>
+  </div>
+
+  <!-- BODY -->
+  <div class="profile-body">
+
+    <!-- ── LEFT COLUMN ── -->
+    <div class="col-left">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('about', this)">About</button>
+        <button class="tab-btn" id="conn-tab-btn" onclick="switchTab('connections', this)">
+          Connections <span class="tab-badge" id="conn-count-badge">0</span>
+        </button>
+      </div>
+
+      <!-- ABOUT PANEL -->
+      <div class="tab-panel active" id="panel-about">
+        <!-- Looking for -->
+        <div class="looking-row" id="looking-row" style="display:none">
+          <span class="looking-label">Looking for:</span>
+          <div id="looking-tags" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+        </div>
+
+        <p class="bio-text" id="bio-text"></p>
+
+        <!-- Working on right now -->
+        <div class="working-card" id="working-card">
+          <div class="working-label"><span class="wl-dot"></span>Working on right now</div>
+          <div class="working-title"   id="working-title"></div>
+          <div class="working-desc"    id="working-desc"></div>
+          <div class="working-details" id="working-details"></div>
+        </div>
+
+        <!-- Publications -->
+        <div class="sr-header">
+          <div class="sr-title">Publications</div>
+          <div class="sr-counter" id="sr-counter"></div>
+        </div>
+        <div id="papers-list"></div>
+
+        <!-- Contact links now live in the header card above -->
+      </div>
+
+      <!-- CONNECTIONS PANEL -->
+      <div class="tab-panel" id="panel-connections">
+        <div id="collab-network-wrap"></div>
+        <div class="collab-net-legend" id="collab-net-legend" style="display:none"></div>
+        <div class="connections-list" id="connections-list"></div>
+      </div>
+      <div id="collab-net-tooltip"></div>
+    </div>
+
+    <!-- ── RIGHT COLUMN — AI chat ── -->
+    <div class="col-right">
+      <div class="ai-panel">
+
+        <!-- Header -->
+        <div class="ai-header-row">
+          <div class="ai-icon">+</div>
+          <span class="ai-title" id="ai-header-text">Ask AI about this researcher</span>
+        </div>
+
+        <!-- Response area (scrollable, grows to fill) -->
+        <div class="ai-response-wrap">
+          <div class="ai-empty" id="ai-empty">Ask a question below or tap a suggestion to learn more about this researcher's work.</div>
+          <div class="ai-response-area" id="ai-response"></div>
+        </div>
+
+        <!-- Controls pinned at bottom -->
+        <div class="ai-controls">
+          <!-- Search row -->
+          <div class="ai-search-row">
+            <input class="ai-search-input" id="ai-input" placeholder="Search their research…" onkeydown="if(event.key==='Enter')runAi()">
+            <button class="ai-go" onclick="runAi()">
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+          <!-- Suggestion chips -->
+          <div class="ai-chips" id="ai-chips"></div>
+        </div>
+
+      </div>
+    </div><!-- /col-right -->
+
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESEARCHER DATA
+═══════════════════════════════════════════════════════════════════════════ */
+const PROFILES = {
+  'RES-00830': {
+    name: 'Jacob O. Wobbrock',
+    role: 'Professor · Paul G. Allen School · University of Washington',
+    tags: ['Accessibility', 'Text Entry', 'Motor Impairment', 'HCI Methods'],
+    stats: { publications: 36, citations: 8420, hindex: 42, collaborators: 18, activeSince: 2001 },
+    bio: 'Jacob researches accessible computing and end-user programming, with a focus on building new input techniques and statistical methods that help people with motor impairments interact with technology more effectively.',
+    currentWork: {
+      title: 'Next-generation touchscreen text entry for motor-impaired users',
+      desc: 'Redesigning EdgeWrite for modern capacitive touchscreens using adaptive AI that learns each user\'s individual movement patterns over a 4-week deployment.',
+      details: '24 participants · 4 weeks · NSF funded'
+    },
+    lookingFor: ['ML engineer', 'NSF co-PI', 'Disability org partner'],
+    papers: [
+      { title: 'Ability-Based Design: Concept, Principles and Examples', desc: 'A framework for designing technology that leverages what users can do, rather than compensating for what they cannot.', venue: 'ACM TACCESS · 2011', citations: 412 },
+      { title: 'EdgeWrite: A Stylus-Based Text Entry Method Designed for High Accuracy', desc: 'A gesture-based text input system using the corners of a square that dramatically reduces the effects of hand tremor.', venue: 'UIST · 2003', citations: 387 },
+      { title: 'Gestures Without Libraries, Toolkits or Training: A $1 Recognizer', desc: 'A simple, robust 2D gesture recognizer requiring no training data that works out of the box for any developer.', venue: 'UIST · 2007', citations: 356 },
+      { title: 'Nonparametric Statistical Methods for HCI', desc: 'The statistical tests HCI researchers actually need — aligned to repeated-measures, non-normal data, and small samples.', venue: 'CHI · 2016', citations: 289 }
+    ],
+    collaborators: [
+      { name: 'Amy J. Ko', role: 'Professor · Information School · UW', initials: 'AK', type: 'UW colleague' },
+      { name: 'Leah Findlater', role: 'Associate Professor · HCDE · UW', initials: 'LF', type: 'UW colleague' },
+      { name: 'Sean A. Munson', role: 'Associate Professor · HCDE · UW', initials: 'SM', type: 'UW colleague' },
+      { name: 'Jon Froehlich', role: 'Associate Professor · CS · UW', initials: 'JF', type: 'UW colleague' },
+      { name: 'Katharina Reinecke', role: 'Associate Professor · CS · UW', initials: 'KR', type: 'UW colleague' }
+    ],
+    aiChips: ['Explain his research', 'What methods does he use?', 'Is he open to collaborating?'],
+    aiAnswers: {
+      'Explain his research': 'Jacob creates new input techniques and statistical tools for people with motor impairments. His most influential work — EdgeWrite and the $1 Recognizer — removed barriers to text entry and gesture recognition for users who can\'t rely on fine motor control.',
+      'What methods does he use?': 'Controlled laboratory experiments, Fitts\' Law paradigms, longitudinal field studies, and non-parametric statistical analysis. He is also known for developing the statistical methods used by HCI researchers themselves.',
+      'Is he open to collaborating?': 'Yes — he actively seeks ML engineers for adaptive input work, disability organization partners for user studies, and NSF co-PIs for grant proposals in accessible computing.'
+    },
+    connect: { email: 'wobbrock@uw.edu', linkedin: 'https://linkedin.com/in/jacob-wobbrock', uwProfile: 'https://www.hcde.uw.edu/wobbrock', scholar: 'https://scholar.google.com' }
+  },
+
+  'RES-01328': {
+    name: 'Amy J. Ko',
+    role: 'Professor · Information School · University of Washington',
+    tags: ['Programming Education', 'CS Education', 'Debugging', 'Equity in Computing'],
+    stats: { publications: 28, citations: 5600, hindex: 35, collaborators: 14, activeSince: 2004 },
+    bio: 'Amy studies how people learn and use programming, with a particular focus on making CS education more equitable and accessible. She bridges HCI, software engineering, and education research, and is the author of two open-access textbooks used at 40+ universities.',
+    currentWork: {
+      title: 'Who belongs in CS? Tracking identity and belonging in first-year programming courses',
+      desc: 'A mixed-methods study following 200 first-year students across 3 universities — examining how sense of belonging shifts by week 4 and which instructor decisions turn the tide.',
+      details: '200 participants · 3 universities · Ongoing 2024–2025'
+    },
+    lookingFor: ['K-12 school partners', 'Curriculum designer', 'Qualitative researcher'],
+    papers: [
+      { title: 'Whyline: A Debugging Interface for Asking Questions about Program Behavior', desc: 'A debugging tool that lets programmers ask "why did this happen?" instead of manually tracing execution.', venue: 'CHI · 2004', citations: 441 },
+      { title: 'Designing for Learning: A Framework for CS Education Research', desc: 'A synthesis of evidence-based pedagogy applied to computing education, covering motivation, cognition, and identity.', venue: 'ICER · 2020', citations: 198 },
+      { title: 'A Decade of Computing Education Research: Lessons and Open Problems', desc: 'A sweeping review of what CS education research has — and hasn\'t — learned over ten years of sustained study.', venue: 'ACM TOCE · 2022', citations: 156 }
+    ],
+    collaborators: [
+      { name: 'Jacob O. Wobbrock', role: 'Professor · Allen School · UW', initials: 'JW', type: 'UW colleague' },
+      { name: 'Sean A. Munson', role: 'Associate Professor · HCDE · UW', initials: 'SM', type: 'UW colleague' },
+      { name: 'Katharina Reinecke', role: 'Associate Professor · CS · UW', initials: 'KR', type: 'UW colleague' },
+      { name: 'Gary Hsieh', role: 'Associate Professor · HCDE · UW', initials: 'GH', type: 'UW colleague' }
+    ],
+    aiChips: ['Explain her research', 'What methods does she use?', 'Which papers?'],
+    aiAnswers: {
+      'Explain her research': 'Amy studies why people struggle to learn programming — and how to design instruction, tools, and curricula that work for everyone, not just students who already feel like they belong in CS.',
+      'What methods does she use?': 'Qualitative interviews, think-aloud studies, large-scale longitudinal surveys, and curriculum design research — often in partnership with K-12 schools and universities.',
+      'Which papers?': 'Her most cited work includes Whyline (CHI 2004, 441 citations), Designing for Learning (ICER 2020, 198 citations), and A Decade of CS Education Research (ACM TOCE 2022, 156 citations).'
+    },
+    connect: { email: 'ajko@uw.edu', linkedin: 'https://linkedin.com/in/amy-ko', uwProfile: 'https://ischool.uw.edu/people/faculty/profile/ajko', scholar: 'https://scholar.google.com', website: 'https://faculty.washington.edu/ajko/' }
+  },
+
+  'RES-01135': {
+    name: 'Sean A. Munson',
+    role: 'Associate Professor · HCDE · University of Washington',
+    tags: ['Health Informatics', 'Behavior Change', 'Personal Informatics', 'Self-Tracking'],
+    stats: { publications: 25, citations: 3800, hindex: 28, collaborators: 12, activeSince: 2008 },
+    bio: 'Sean researches how technology supports (and sometimes undermines) health behavior change. He studies self-tracking apps, wearables, and social media through a longitudinal lens — asking not just "does this work?" but "does it keep working?"',
+    currentWork: {
+      title: 'Self-tracking for bipolar disorder — closing the loop with care teams',
+      desc: 'Co-designing a symptom tracking app with 35 people living with bipolar disorder and their clinicians. Moving from passive daily logs to AI-assisted pattern detection shared in clinical appointments.',
+      details: '35 participants · 18 months · NIH funded'
+    },
+    lookingFor: ['Clinical partner (psychiatry)', 'Behavior change expert', 'NIH co-PI'],
+    papers: [
+      { title: 'Self-Tracking for Mental Health: Anxiety, Oversight, and Design', desc: 'A longitudinal study revealing how health tracking apps can inadvertently increase anxiety — and design principles to prevent it.', venue: 'CHI · 2021', citations: 178 },
+      { title: 'Persuasion, Reflection, and Voluntary Behavior Change', desc: 'Why persuasive technology alone doesn\'t sustain behavior change — and the role of reflection and autonomy in long-term outcomes.', venue: 'CSCW · 2019', citations: 145 },
+      { title: 'Social Comparison in Health Apps: Effects on Motivation', desc: 'How comparing your steps and sleep data to friends changes — and sometimes breaks — motivation over time.', venue: 'CHI · 2018', citations: 132 }
+    ],
+    collaborators: [
+      { name: 'Jacob O. Wobbrock', role: 'Professor · Allen School · UW', initials: 'JW', type: 'UW colleague' },
+      { name: 'Amy J. Ko', role: 'Professor · iSchool · UW', initials: 'AK', type: 'UW colleague' },
+      { name: 'Wanda Pratt', role: 'Professor · iSchool · UW', initials: 'WP', type: 'UW colleague' },
+      { name: 'Leah Findlater', role: 'Associate Professor · HCDE · UW', initials: 'LF', type: 'UW colleague' }
+    ],
+    aiChips: ['Explain his research', 'What methods does he use?', 'Is he open to collaborating?'],
+    aiAnswers: {
+      'Explain his research': 'Sean studies the long-term effects of health technology — particularly self-tracking apps and wearables. His work asks whether these tools actually produce sustained behavior change, or just short-term engagement.',
+      'What methods does he use?': 'Longitudinal diary studies, randomized controlled trials, qualitative interviews, and survey research — typically in partnership with clinical organizations.',
+      'Is he open to collaborating?': 'Yes — he is actively seeking clinical partners in psychiatry or primary care, NIH co-PIs, and behavior change researchers for his current NIH-funded project.'
+    },
+    connect: { email: 'smunson@uw.edu', linkedin: 'https://linkedin.com/in/sean-munson', uwProfile: 'https://www.hcde.uw.edu/munson', scholar: 'https://scholar.google.com' }
+  },
+
+  'RES-01515': {
+    name: 'Leah Findlater',
+    role: 'Associate Professor · HCDE · University of Washington',
+    tags: ['Accessibility', 'Deaf & Hard of Hearing', 'Adaptive Interfaces', 'Mobile HCI'],
+    stats: { publications: 25, citations: 4200, hindex: 32, collaborators: 10, activeSince: 2005 },
+    bio: 'Leah designs and evaluates accessible technology for people who are deaf or hard of hearing. Her work spans real-time captioning, vibrotactile alerts, and AI-powered sound recognition — all built and tested with the DHH community.',
+    currentWork: {
+      title: 'Smartwatch alerts that deaf users can reliably detect in noisy public spaces',
+      desc: 'Building and testing vibrotactile + visual alert patterns for everyday sounds: doorbells, fire alarms, and someone calling your name. Field testing across 5 cities.',
+      details: '60 participants · 5 cities · NSF funded'
+    },
+    lookingFor: ['DHH community org', 'Audio ML researcher', 'Industry wearable partner'],
+    papers: [
+      { title: 'Soundwatch: Deep Learning Approaches to Sound Recognition on Smartwatches', desc: 'A smartwatch app that uses a deep learning model to identify environmental sounds in real time for deaf and hard-of-hearing users.', venue: 'ASSETS · 2020', citations: 198 },
+      { title: 'Accessibility of Voice Interfaces for Deaf and Hard-of-Hearing Users', desc: 'A comprehensive evaluation of why Alexa, Siri, and Google Assistant still fail DHH users — and what it would take to fix that.', venue: 'CHI · 2022', citations: 167 },
+      { title: 'Kinesthetic vs. Visual Feedback Modalities for Deaf Users', desc: 'Comparing vibration and visual alerts for emergency sounds — measuring detection time, comfort, and social acceptance in public spaces.', venue: 'ASSETS · 2019', citations: 134 }
+    ],
+    collaborators: [
+      { name: 'Jacob O. Wobbrock', role: 'Professor · Allen School · UW', initials: 'JW', type: 'UW colleague' },
+      { name: 'Jon Froehlich', role: 'Associate Professor · CS · UW', initials: 'JF', type: 'UW colleague' },
+      { name: 'Amy J. Ko', role: 'Professor · iSchool · UW', initials: 'AK', type: 'UW colleague' }
+    ],
+    aiChips: ['Explain her research', 'What methods does she use?', 'Is she open to collaborating?'],
+    aiAnswers: {
+      'Explain her research': 'Leah builds technology that helps deaf and hard-of-hearing people navigate a world designed around hearing — from smartwatch sound alerts to real-time captioning on AR glasses.',
+      'What methods does she use?': 'Participatory design with the DHH community, controlled lab studies, field deployments, and deep learning model evaluation for audio classification.',
+      'Is she open to collaborating?': 'Yes — she is actively seeking DHH community organizations, audio ML researchers, and enterprise partners for wearable field deployments.'
+    },
+    connect: { email: 'findlater@uw.edu', linkedin: 'https://linkedin.com/in/leah-findlater', uwProfile: 'https://www.hcde.uw.edu/findlater', scholar: 'https://scholar.google.com' }
+  }
+};
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GENERIC PROFILE BUILDER
+═══════════════════════════════════════════════════════════════════════════ */
+const DOMAIN_WORK = {
+  'accessibility':{ title: 'Reducing barriers to technology for users with disabilities', desc: 'Running a participatory design study with disability community partners to identify the most critical gaps in current assistive technology.', details: 'Community study · Ongoing' },
+  'ai':           { title: 'Understanding how non-experts make decisions with AI recommendations', desc: 'A mixed-methods study examining when people appropriately trust, override, or ignore AI outputs in high-stakes contexts.', details: 'Mixed methods · In progress' },
+  'health':       { title: 'Designing technology for long-term health behavior maintenance', desc: 'An 18-month longitudinal study examining what makes healthy behaviors persist after the first 90 days of using a health app.', details: 'Longitudinal · 18 months' },
+  'default':      { title: 'Current empirical research in human-computer interaction', desc: 'Conducting ongoing studies that generate new findings and design implications for the field.', details: 'Ongoing research' }
+};
+function domainWork(sub) {
+  if (!sub) return DOMAIN_WORK['default'];
+  const s = sub.toLowerCase();
+  if (/access|disab|impair/.test(s)) return DOMAIN_WORK['accessibility'];
+  if (/ai|machine|intelligence|learn/.test(s)) return DOMAIN_WORK['ai'];
+  if (/health|wellbeing|mental|medical/.test(s)) return DOMAIN_WORK['health'];
+  return DOMAIN_WORK['default'];
+}
+function buildGenericProfile(id, name, subName, pc) {
+  const words = name.trim().split(/\s+/);
+  const firstName = words[0];
+  const emailLoc  = name.toLowerCase().replace(/[^a-z]/g,'').slice(0,10);
+  const work = domainWork(subName);
+  const estimatedCitations = pc * 42;
+  const estimatedH = Math.max(4, Math.floor(Math.sqrt(pc * 8)));
+  return {
+    name, role: `Researcher · ${subName || 'University of Washington'} · UW`,
+    tags: [subName, 'UW Research', 'HCI'].filter(Boolean).slice(0,3),
+    stats: { publications: pc, citations: estimatedCitations, hindex: estimatedH, collaborators: Math.floor(pc / 3), activeSince: 2010 },
+    bio: `${firstName} is a researcher at the University of Washington with ${pc} indexed publications. Their work focuses on ${subName || 'human-computer interaction'}, combining rigorous empirical methods with practical design implications.`,
+    currentWork: work,
+    lookingFor: ['Research collaborator', 'Study participants', 'Industry partner'],
+    papers: (() => {
+      // Try real generated papers passed from landing.html via sessionStorage
+      try {
+        const stored = sessionStorage.getItem('dubslab-profile-papers');
+        const storedName = sessionStorage.getItem('dubslab-profile-name');
+        if (stored && storedName === name) {
+          const raw = JSON.parse(stored);
+          if (Array.isArray(raw) && raw.length > 0) {
+            return raw.slice(0, Math.min(pc, 200)).map(p => ({
+              title:     p.title,
+              desc:      `Published in ${p.journal} · ${p.year}.`,
+              venue:     `${p.journal} · ${p.year}`,
+              citations: p.citations || 0,
+              link:      p.link || ''
+            }));
+          }
+        }
+      } catch(e) {}
+      // Fallback: still better than "Research publication N" — use journal abbreviations
+      return Array.from({ length: Math.min(pc, 8) }, (_, i) => ({
+        title: `${subName || 'HCI'}: a longitudinal study (${2024-i})`,
+        desc:  `An empirical study contributing findings and design implications to ${subName || 'HCI'}.`,
+        venue: ['CHI','CSCW','ASSETS','UIST','IMWUT','DIS','TOCHI','IUI'][i % 8] + ` · ${2024-i}`,
+        citations: Math.max(0, Math.floor(estimatedCitations / (i+1) * 0.35))
+      }));
+    })(),
+    collaborators: [],
+    aiChips: [`Explain ${firstName}'s research`, 'What methods?', 'Open to collaborating?'],
+    aiAnswers: {
+      [`Explain ${firstName}'s research`]: `${name} researches ${subName || 'HCI'} at the University of Washington, with ${pc} publications contributing to both theory and practice in the field.`,
+      'What methods?': `Empirical methods typical of ${subName || 'HCI'} research, including user studies, surveys, and iterative design evaluations.`,
+      'Open to collaborating?': `Contact ${name} directly at ${emailLoc}@uw.edu to discuss potential collaboration.`
+    },
+    connect: { email: `${emailLoc}@uw.edu`, uwProfile: 'https://www.washington.edu' }
+  };
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LOAD PROFILE
+═══════════════════════════════════════════════════════════════════════════ */
+const params  = new URLSearchParams(location.search);
+const resId   = params.get('id')   || '';
+const resName = params.get('name') || '';
+const resSub  = params.get('sub')  || '';
+const resPc   = parseInt(params.get('pc') || '10');
+
+let P = PROFILES[resId];
+if (!P && resName) P = buildGenericProfile(resId || 'RES-UNK', resName, resSub, resPc);
+if (!P)            P = buildGenericProfile('RES-UNK', 'Sara Kim', 'Accessibility & Voice Interfaces', 12);
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════════════════════════════════ */
+const nameWords = P.name.trim().split(/\s+/);
+const initials  = nameWords.filter(w => /^[A-Z]/.test(w)).map(w => w[0]).slice(0, 2).join('');
+const firstName = nameWords[0];
+
+document.title = P.name + ' · Dubs\' Research Hub';
+document.getElementById('ph-avatar').textContent = initials || '??';
+document.getElementById('ph-name').textContent   = P.name;
+document.getElementById('ph-role').textContent   = P.role;
+document.getElementById('ai-header-text').textContent = `Ask AI about ${firstName}'s research`;
+document.getElementById('ai-input').placeholder = `Search ${firstName}'s research…`;
+
+// Tags
+P.tags.forEach(t => {
+  const s = document.createElement('span'); s.className = 'ph-tag'; s.textContent = t;
+  document.getElementById('ph-tags').appendChild(s);
+});
+
+// Stats
+const statDefs = [
+  { num: P.stats.publications,            label: 'publications' },
+  { num: P.stats.citations.toLocaleString(), label: 'citations' },
+  { num: P.stats.hindex,                  label: 'h-index' },
+  { num: P.stats.collaborators,           label: 'collaborators' },
+  { num: P.stats.activeSince,             label: 'active since' }
+];
+statDefs.forEach(s => {
+  document.getElementById('ph-stats').insertAdjacentHTML('beforeend',
+    `<div class="stat-item"><span class="stat-num">${s.num}</span><span class="stat-label">${s.label}</span></div>`);
+});
+
+// Bio
+document.getElementById('bio-text').textContent = P.bio;
+
+// Current work
+if (P.currentWork) {
+  document.getElementById('working-title').textContent   = P.currentWork.title;
+  document.getElementById('working-desc').textContent    = P.currentWork.desc;
+  document.getElementById('working-details').textContent = P.currentWork.details || '';
+} else {
+  document.getElementById('working-card').style.display = 'none';
+}
+
+// Looking for
+if (P.lookingFor && P.lookingFor.length) {
+  const lookRow  = document.getElementById('looking-row');
+  const lookTags = document.getElementById('looking-tags');
+  lookRow.style.display = 'flex';
+  P.lookingFor.forEach(t => lookTags.insertAdjacentHTML('beforeend', `<span class="lf-tag">${t}</span>`));
+}
+
+// Papers — show all publications
+const papersEl = document.getElementById('papers-list');
+const totalPubs = Math.max(P.papers.length, P.stats.publications);
+document.getElementById('sr-counter').textContent = `${P.papers.length} of ${totalPubs}`;
+P.papers.forEach(p => {
+  // Open the real paper when we have a DOI link; otherwise fall back to a Google
+  // Scholar search scoped to the title + author so the link still lands on the paper.
+  const paperUrl = p.link
+    ? p.link
+    : 'https://scholar.google.com/scholar?q=' + encodeURIComponent(`${p.title} ${P.name}`.trim());
+  papersEl.insertAdjacentHTML('beforeend', `
+    <a class="paper-item" href="${paperUrl}" target="_blank" rel="noopener">
+      <div class="paper-title">${p.title}</div>
+      <div class="paper-desc">${p.desc}</div>
+      <div class="paper-venue">${p.venue}${p.citations ? ' · ' + p.citations.toLocaleString() + ' citations' : ''} · <span class="paper-link-hint">View paper ↗</span></div>
+    </a>`);
+});
+
+// ── Connections / Collaboration Network ──────────────────────────────────────
+const connList  = document.getElementById('connections-list');
+const connBadge = document.getElementById('conn-count-badge');
+
+// Try reading collab data from sessionStorage (passed by landing.html)
+let sessionCollabs = [];
+try {
+  const raw = sessionStorage.getItem('dubslab-profile-collabs');
+  const storedNameC = sessionStorage.getItem('dubslab-profile-name');
+  // Only trust stored collabs if they belong to the researcher we're showing.
+  if (raw && storedNameC === (resName || P.name)) sessionCollabs = JSON.parse(raw);
+} catch(e) {}
+
+// Merge with P.collaborators (hardcoded profiles have rich collab data)
+const richCollabs = P.collaborators.length ? P.collaborators : [];
+const allCollabs  = sessionCollabs.length ? sessionCollabs : richCollabs;
+
+connBadge.textContent = allCollabs.length || P.stats.collaborators;
+
+function _buildCollabNetwork(collabs) {
+  const isDark = document.body.classList.contains('dark');
+  const wrap   = document.getElementById('collab-network-wrap');
+  const legend = document.getElementById('collab-net-legend');
+  const tip    = document.getElementById('collab-net-tooltip');
+  if (!wrap || !window.d3) return;
+
+  // Color scheme matching the main network
+  const COLOR = {
+    focal:    isDark ? { fill: 'rgba(167,139,250,0.25)', stroke: 'rgba(167,139,250,0.7)', text: 'rgba(230,225,240,0.95)' }
+                     : { fill: 'rgba(109,40,217,0.12)',  stroke: 'rgba(109,40,217,0.55)', text: '#44296a' },
+    'uw-same': isDark ? { fill: 'rgba(52,211,153,0.18)', stroke: 'rgba(52,211,153,0.6)', text: 'rgba(52,211,153,0.95)' }
+                      : { fill: 'rgba(34,197,94,0.12)',  stroke: 'rgba(22,163,74,0.5)',  text: '#166534' },
+    'uw-cross':isDark ? { fill: 'rgba(52,211,153,0.1)',  stroke: 'rgba(52,211,153,0.4)', text: 'rgba(52,211,153,0.8)' }
+                      : { fill: 'rgba(34,197,94,0.08)',  stroke: 'rgba(22,163,74,0.35)', text: '#1a7a42' },
+    'ext':    isDark ? { fill: 'rgba(251,191,36,0.15)',  stroke: 'rgba(251,191,36,0.55)',text: 'rgba(251,191,36,0.9)' }
+                     : { fill: 'rgba(245,158,11,0.12)',  stroke: 'rgba(180,100,0,0.5)', text: '#92400e' },
+    'ind':    isDark ? { fill: 'rgba(251,191,36,0.1)',   stroke: 'rgba(251,191,36,0.4)', text: 'rgba(251,191,36,0.8)' }
+                     : { fill: 'rgba(245,158,11,0.08)',  stroke: 'rgba(180,100,0,0.38)',text: '#a36010' },
+  };
+
+  const W = wrap.getBoundingClientRect().width || 560;
+  const H = Math.min(320, W * 0.58);
+  const cx = W / 2, cy = H / 2;
+
+  // Build nodes
+  const focalNode = { id: '_focal', name: P.name || resName, type: 'focal', fx: cx, fy: cy, r: 30 };
+  const collabNodes = collabs.map((c, i) => ({
+    id: c.id || ('c' + i), name: c.name,
+    type: c.type || 'uw-same',
+    institution: c.institution || c.role || '',
+    r: 21,
+  }));
+  const nodes  = [focalNode, ...collabNodes];
+  const links  = collabNodes.map(c => ({ source: '_focal', target: c.id }));
+
+  // Force simulation — run synchronously for stable layout
+  const sim = d3.forceSimulation(nodes)
+    .force('link',    d3.forceLink(links).id(d => d.id).distance(W * 0.22).strength(0.6))
+    .force('charge',  d3.forceManyBody().strength(-120))
+    .force('collide', d3.forceCollide(d => d.r + 8).strength(0.85))
+    .force('x', d3.forceX(cx).strength(0.06))
+    .force('y', d3.forceY(cy).strength(0.06))
+    .stop();
+  for (let i = 0; i < 300; i++) sim.tick();
+
+  // Clamp to bounds
+  nodes.forEach(n => {
+    n.x = Math.max(n.r + 4, Math.min(W - n.r - 4, n.x));
+    n.y = Math.max(n.r + 4, Math.min(H - n.r - 4, n.y));
+  });
+  const nodeById = Object.fromEntries(nodes.map(n => [n.id, n]));
+
+  // Render SVG
+  wrap.innerHTML = '';
+  const svg = d3.select(wrap).append('svg')
+    .attr('id', 'collab-network-svg')
+    .attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('height', H);
+
+  // Lines
+  svg.append('g').selectAll('line')
+    .data(links).join('line')
+    .attr('x1', d => nodeById['_focal'].x)
+    .attr('y1', d => nodeById['_focal'].y)
+    .attr('x2', d => nodeById[d.target.id || d.target].x)
+    .attr('y2', d => nodeById[d.target.id || d.target].y)
+    .attr('stroke', isDark ? 'rgba(255,255,255,0.09)' : 'rgba(0,0,0,0.08)')
+    .attr('stroke-width', 1.5)
+    .attr('stroke-dasharray', d => {
+      const t = nodeById[d.target.id || d.target]?.type;
+      return (t === 'ext' || t === 'ind') ? '4,3' : 'none';
+    });
+
+  // Nodes
+  const ng = svg.append('g').selectAll('g')
+    .data(nodes).join('g')
+    .style('cursor', 'default');
+
+  ng.append('circle')
+    .attr('cx', d => d.x).attr('cy', d => d.y).attr('r', d => d.r)
+    .attr('fill', d => COLOR[d.type]?.fill || COLOR['uw-same'].fill)
+    .attr('stroke', d => COLOR[d.type]?.stroke || COLOR['uw-same'].stroke)
+    .attr('stroke-width', 1.5);
+
+  // Labels — 2-line: initial + last name
+  ng.each(function(d) {
+    const g = d3.select(this);
+    const col = COLOR[d.type] || COLOR['uw-same'];
+    const parts = (d.name || '').trim().split(/\s+/);
+    const lastName = parts.length >= 2 ? parts[parts.length - 1] : (parts[0] || '');
+    const trunc = lastName.length > 8 ? lastName.slice(0,7) + '…' : lastName;
+    const t = g.append('text')
+      .attr('text-anchor', 'middle').attr('font-size', d.type === 'focal' ? 9 : 7.5)
+      .attr('font-weight', '700').attr('fill', col.text).attr('pointer-events', 'none');
+    if (parts.length >= 2) {
+      t.append('tspan').attr('x', d.x).attr('y', d.y).attr('dy', '-4').text(parts[0][0] + '.');
+      t.append('tspan').attr('x', d.x).attr('dy', '10').text(trunc);
+    } else {
+      t.append('tspan').attr('x', d.x).attr('y', d.y).attr('dominant-baseline', 'middle').text(trunc);
+    }
+  });
+
+  // Tooltip
+  ng.on('mouseenter', function(event, d) {
+    if (d.type === 'focal') return;
+    tip.style.display = 'block';
+    const typeLabel = { 'uw-same': 'UW · Same dept', 'uw-cross': 'UW · Cross-domain', 'ext': 'External collaborator', 'ind': 'Industry partner' };
+    tip.innerHTML = `<strong>${d.name}</strong>${d.institution ? `<br><span style="font-weight:500;opacity:0.7">${d.institution}</span>` : ''}<br><span style="opacity:0.55;font-size:10px">${typeLabel[d.type] || d.type}</span>`;
+  }).on('mousemove', function(event) {
+    tip.style.left = (event.clientX + 14) + 'px';
+    tip.style.top  = (event.clientY - 38) + 'px';
+  }).on('mouseleave', function() {
+    tip.style.display = 'none';
+  });
+
+  // Legend
+  legend.style.display = 'flex';
+  const legendItems = [
+    { dot: COLOR['focal'].stroke,    label: resName.split(' ')[0] + ' (you)' },
+    { dot: COLOR['uw-same'].stroke,  label: 'UW colleague' },
+    { dot: COLOR['ext'].stroke,      label: 'External / industry' },
+  ];
+  legend.innerHTML = legendItems.map(l =>
+    `<span style="display:flex;align-items:center"><span class="collab-net-legend-dot" style="background:${l.dot}"></span>${l.label}</span>`
+  ).join('');
+}
+
+// Human-readable labels for collaborator types
+const _CONN_TYPE_LABEL = {
+  'uw-same':  'UW · same area',
+  'uw-cross': 'UW · cross-domain',
+  'ext':      'External collaborator',
+  'ind':      'Industry partner'
+};
+
+// Render the textual collaborator list (shown beneath the network map)
+function renderConnList(collabs) {
+  connList.innerHTML = '';
+  collabs.forEach(c => {
+    const initials = c.initials
+      || (c.name || '?').trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+    const role = c.role || c.institution || _CONN_TYPE_LABEL[c.type] || '';
+    connList.insertAdjacentHTML('beforeend', `
+      <div class="conn-item">
+        <div class="conn-avatar">${initials}</div>
+        <div>
+          <div class="conn-name">${c.name}</div>
+          <div class="conn-role">${role}</div>
+        </div>
+        <span class="conn-type">${_CONN_TYPE_LABEL[c.type] || c.type || ''}</span>
+      </div>`);
+  });
+}
+
+// Render the D3 network map AND the collaborator list when we have collab data.
+if (allCollabs.length) {
+  _buildCollabNetwork(allCollabs);
+  renderConnList(allCollabs);
+} else {
+  document.getElementById('collab-net-legend').style.display = 'none';
+  connList.insertAdjacentHTML('beforeend', '<p style="font-size:13px;color:#aeaeb2;text-align:center;padding:24px 0;">No collaboration data available for this researcher yet.</p>');
+}
+
+// AI chips — overlap prompt is always first
+const chipsEl = document.getElementById('ai-chips');
+
+// Permanent overlap chip
+const overlapChip = document.createElement('button');
+overlapChip.className = 'ai-chip ai-chip-overlap';
+overlapChip.textContent = 'How does my work overlap with this researcher\'s?';
+overlapChip.onclick = () => {
+  document.getElementById('ai-input').value = 'How does my work overlap with this researcher\'s work?';
+  runAi();
+};
+chipsEl.appendChild(overlapChip);
+
+P.aiChips.forEach(chip => {
+  const b = document.createElement('button'); b.className = 'ai-chip'; b.textContent = chip;
+  b.onclick = () => { document.getElementById('ai-input').value = chip; runAi(); };
+  chipsEl.appendChild(b);
+});
+
+// Contact links
+const contactEl = document.getElementById('contact-links');
+const { connect } = P;
+
+if (connect.email) contactEl.insertAdjacentHTML('beforeend', `
+  <button class="contact-link" onclick="copyEmail('${connect.email}', this)">
+    <div class="cl-icon cl-email">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    </div>
+    <span class="cl-label">${connect.email}</span>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+  </button>`);
+
+if (connect.linkedin) contactEl.insertAdjacentHTML('beforeend', `
+  <a class="contact-link" href="${connect.linkedin}" target="_blank" rel="noopener">
+    <div class="cl-icon cl-linkedin">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+    </div>
+    <span class="cl-label">LinkedIn</span>
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+  </a>`);
+
+if (connect.uwProfile) contactEl.insertAdjacentHTML('beforeend', `
+  <a class="contact-link" href="${connect.uwProfile}" target="_blank" rel="noopener">
+    <div class="cl-icon cl-uw">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    </div>
+    <span class="cl-label">UW Profile</span>
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+  </a>`);
+
+if (connect.scholar) contactEl.insertAdjacentHTML('beforeend', `
+  <a class="contact-link" href="${connect.scholar}" target="_blank" rel="noopener">
+    <div class="cl-icon cl-scholar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.42a12.08 12.08 0 0 1 .66 6.48A11.95 11.95 0 0 1 12 20.05"/></svg>
+    </div>
+    <span class="cl-label">Google Scholar</span>
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+  </a>`);
+
+if (connect.website) contactEl.insertAdjacentHTML('beforeend', `
+  <a class="contact-link" href="${connect.website}" target="_blank" rel="noopener">
+    <div class="cl-icon cl-web">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    </div>
+    <span class="cl-label">Personal Website</span>
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+  </a>`);
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════════════════════════════════════ */
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+  // The connections panel is hidden at load, so the network map is built at a
+  // fallback width. Rebuild it now that the panel is visible and has real width.
+  if (tab === 'connections' && allCollabs.length) {
+    requestAnimationFrame(() => _buildCollabNetwork(allCollabs));
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AI PANEL
+═══════════════════════════════════════════════════════════════════════════ */
+let _aiMode = 'about';
+
+function setAiMode(mode, btn) {
+  _aiMode = mode;
+  document.querySelectorAll('.ai-toggle-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('ai-input').placeholder = mode === 'overlap'
+    ? 'Describe your research to find overlap…'
+    : `Search ${firstName}'s research…`;
+  // Clear response area when switching modes
+  document.getElementById('ai-empty').style.display = '';
+  document.getElementById('ai-response').style.display = 'none';
+  document.getElementById('ai-input').value = '';
+}
+
+function runAi() {
+  const q = document.getElementById('ai-input').value.trim();
+  if (!q) return;
+  const emptyEl    = document.getElementById('ai-empty');
+  const responseEl = document.getElementById('ai-response');
+  const answer = _aiMode === 'overlap'
+    ? `Based on your description, the strongest overlap with ${firstName}'s work is in ${P.tags.slice(0,2).join(' and ')}. ${firstName} has ${P.stats.publications} publications in this area and is actively seeking collaborators.`
+    : (P.aiAnswers[q] || `${firstName} has ${P.stats.publications} publications on ${P.tags.slice(0,2).join(' and ')}. Their most recent work focuses on ${P.currentWork ? P.currentWork.title.toLowerCase() : P.tags[0]}.`);
+  emptyEl.style.display    = 'none';
+  responseEl.style.display = 'block';
+  responseEl.textContent   = '';
+  let i = 0;
+  const interval = setInterval(() => {
+    responseEl.textContent += answer[i++] || '';
+    if (i >= answer.length) clearInterval(interval);
+  }, 16);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════════════════════════ */
+function copyEmail(email, btn) {
+  navigator.clipboard.writeText(email).then(() => {
+    const label = btn.querySelector('.cl-label');
+    const orig = label.textContent;
+    label.style.color = '#34c759';
+    label.textContent = 'Copied!';
+    setTimeout(() => { label.textContent = orig; label.style.color = ''; }, 1800);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SAVE TO LIBRARY — persists the researcher in localStorage (shared key with
+   the rest of the app). Reflects saved state on load and toggles on click.
+═══════════════════════════════════════════════════════════════════════════ */
+const LIB_KEY = 'dubslab-library';
+function _libRead()  { try { return JSON.parse(localStorage.getItem(LIB_KEY) || '[]'); } catch(e) { return []; } }
+function _libWrite(a){ try { localStorage.setItem(LIB_KEY, JSON.stringify(a)); } catch(e) {} }
+function _libItemId(){ return resId || P.name; }
+
+function _setSaveBtnState(btn, saved) {
+  btn.classList.toggle('saved', saved);
+  btn.title = saved ? 'Saved — click to remove' : 'Save to library';
+  const svg = btn.querySelector('svg');
+  if (svg) svg.setAttribute('fill', saved ? 'currentColor' : 'none');
+}
+
+function _saveToast(msg) {
+  let t = document.getElementById('save-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'save-toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 1700);
+}
+
+function toggleSaveLibrary(btn) {
+  const lib = _libRead();
+  const id  = _libItemId();
+  const idx = lib.findIndex(x => x.id === id);
+  if (idx >= 0) {
+    lib.splice(idx, 1);
+    _libWrite(lib);
+    _setSaveBtnState(btn, false);
+    _saveToast('Removed from library');
+  } else {
+    lib.push({ id, type: 'researcher', name: P.name, sub: resSub || '', pc: P.stats.publications || 0, savedAt: Date.now() });
+    _libWrite(lib);
+    _setSaveBtnState(btn, true);
+    _saveToast('Saved to library');
+  }
+}
+
+// Reflect saved state when the page loads
+(function initSaveBtn() {
+  const btn = document.getElementById('btn-save');
+  if (!btn) return;
+  const saved = _libRead().some(x => x.id === _libItemId());
+  if (saved) _setSaveBtnState(btn, true);
+})();
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THEME — reads same key as landing.html ('dubslab-theme')
+═══════════════════════════════════════════════════════════════════════════ */
+function applyTheme(isDark) {
+  document.body.classList.toggle('dark', isDark);
+  document.querySelector('.tt-dark').classList.toggle('active', isDark);
+  document.querySelector('.tt-light').classList.toggle('active', !isDark);
+  try { localStorage.setItem('dubslab-theme', isDark ? 'dark' : 'light'); } catch(e) {}
+}
+function toggleTheme() {
+  applyTheme(!document.body.classList.contains('dark'));
+}
+// Init — read saved preference from the same key landing.html writes
+(function() {
+  let saved = null;
+  try { saved = localStorage.getItem('dubslab-theme'); } catch(e) {}
+  applyTheme(saved === 'dark');
+})();
+</script>
+</body>
+</html>
